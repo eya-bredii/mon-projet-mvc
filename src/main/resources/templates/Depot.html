@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dépot</title>
+    <style>
+        form {
+            width: 300px;
+            margin-left: 20px; 
+        }
+
+        label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            
+        }
+
+    </style>
+</head>
+<body>
+
+<form th:action="@{/depot/{id}(id=${c.id})}" method="post">
+    <h1>Montant à déposer</h1>
+    <label for="montant">Montant :</label>
+    <input type="number" name="montant" id="montant" required>
+    <button type="submit">Ajouter</button>
+</form>
+
+</body>
+</html>
