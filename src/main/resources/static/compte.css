@@ -1,0 +1,29 @@
+<style>
+    .btn-custom {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-depot {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-depot:hover {
+        background-color: #218838;
+    }
+
+    .btn-retrait {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-retrait:hover {
+        background-color: #c82333;
+    }
+</style>

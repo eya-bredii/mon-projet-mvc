@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liste des produits </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h2>LISTES DES COMPTES </h2>
+<table class="table table-dark table-striped" >
+
+  <div th:if="${#lists.isEmpty(comptes)}">  
+    <center> <h2>  there are no product yet! </h2></center>
+ </div>
+  <thead th:unless="${#lists.isEmpty(comptes)}">
+  
+ 
+ 
+   <th> Id: </th>
+   <th> Titulaire: </th>
+   <th> Solde: </th>
+   <th> Banque name: </th>
+   <th> Supprimer </th>
+   <th> DetailsCompte </th>
+
+  </thead>
+  <tbody>
+   <tr th:each="c:${comptes}">
+     <td th:text="${c.id}"> </td>
+     <td th:text="${c.titulaire}"> </td>
+     <td th:text="${c.solde}"> </td>
+      <td th:text="${c.banque.name}"> </td>
+     
+     <td> <a class="btn btn-danger"th:href="@{/comptes/supprimer/{id}(id=${c.id})}"> Supprimer </td>
+     <td><a class="btn btn-success" th:href="@{/comptes/detailsCompte/{id}(id=${c.id})}">DetailsCompte</a></td>
+     
+   </tr>
+   
+  </tbody>
+</body>
+</table>
+ 
+</html>
