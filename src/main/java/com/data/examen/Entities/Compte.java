@@ -1,9 +1,11 @@
 package com.data.examen.Entities;
 
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -11,9 +13,13 @@ public class Compte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
 	private String titulaire;
 	private double solde;
+	
 	@ManyToOne
+	@JoinColumn(name = "banque_id")
+	
 	private Banque banque;
 	
 	public Long getId() {

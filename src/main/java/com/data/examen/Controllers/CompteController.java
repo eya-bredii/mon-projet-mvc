@@ -1,5 +1,6 @@
 package com.data.examen.Controllers;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.data.examen.Entities.Banque;
 import com.data.examen.Entities.Compte;
@@ -42,6 +44,7 @@ public class CompteController {
  public String add(@RequestParam("banqueId")long id, @ModelAttribute("compte") Compte c) {
 	Banque b=banqueRepository.getById(id); 
 	c.setBanque(b);
+	 
 	compteRepository.save(c);
 	 
 	return "redirect:listeComptes";
@@ -56,8 +59,8 @@ public class CompteController {
  }
  @GetMapping("depot/{id}")
  public String deposer(@PathVariable("id") Long id, Model model) {
-     Compte compte = compteRepository.getById(id); // ou findById(id).get()
-     model.addAttribute("c", compte);
+     Compte compte = compteRepository.getById(id); 
+     model.addAttribute("compte", compte);
      return "Depot"; // Vue avec le formulaire pour entrer le montant
  }
  @PostMapping("depot/{id}")
@@ -68,13 +71,14 @@ public class CompteController {
      Compte compte = compteRepository.getById(id);
      compte.setSolde(compte.getSolde() + montant);
      compteRepository.save(compte); // Sauvegarde en base
+    
+     return "redirect:/comptes/listeComptes";
 
-     return "redirect:/comptes/detailsCompte"; // Redirection vers la liste
  }
  @GetMapping("retrait/{id}")
  public String retrait(@PathVariable("id") Long id, Model model) {
      Compte compte = compteRepository.getById(id);
-     model.addAttribute("c", compte);
+     model.addAttribute("compte", compte);
      return "retrait"; // Formulaire pour entrer le montant à retirer
  }
  @PostMapping("retrait/{id}")
@@ -85,8 +89,8 @@ public class CompteController {
      Compte compte = compteRepository.getById(id);
      compte.setSolde(compte.getSolde() - montant);
      compteRepository.save(compte); // Sauvegarde en base
-
-     return "redirect:../comptes/detailsCompte/{id}"; // Redirection vers les détails du compte avec l'ID
+     
+     return "redirect:/comptes/listeComptes"; 
  }
 
 

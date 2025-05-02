@@ -11,12 +11,13 @@
 
     <h2 class="text-center mb-4">Formulaire d'ajout</h2>
 
-    <form th:action="@{/comptes/add}" th:object="${compte}" method="POST" >
+    <form th:action="@{/comptes/add}" th:object="${compte}" method="POST"  >
            
              Titulaire:
             <input type="text" th:field="*{titulaire}"  required >
              Solde
             <input type="number" th:field="*{solde}"  required >
+          
     <label for="banqueId"> choose banque :</label>
      <select name="banqueId" required>
      <option value=""disabled selected> choose banque</option>
@@ -25,7 +26,8 @@
      <br>
 
         
-
+         
+         
         <button type="submit" class="btn btn-primary w-100">Valider</button>
 
     </form>
