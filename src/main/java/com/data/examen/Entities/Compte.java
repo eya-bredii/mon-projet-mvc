@@ -17,7 +17,7 @@ public class Compte {
 	private double solde;
 	private Long cin;
 	private String email;
-	
+	private String imageUrl;
 
 	@ManyToOne
 	@JoinColumn(name = "banque_id")
@@ -61,19 +61,28 @@ public class Compte {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Compte(Long id,String titulaire,double solde,Long cin,String email) {
+	public String getImageUrl() {
+	    return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+	    this.imageUrl = imageUrl;
+	}
+	public Compte(Long id,String titulaire,double solde,Long cin,String email,String imageUrl) {
 		this.id=id;
 		this.titulaire=titulaire;
 		this.solde=solde;
 		this.cin=cin;
 		this.email=email;
+		this.imageUrl=imageUrl;
 	}
-	public Compte(String titulaire,double solde,long cin,String email) {
+	public Compte(String titulaire,double solde,long cin,String email,String imageUrl) {
 		
 		this.titulaire=titulaire;
 		this.solde=solde;
 		this.cin=cin;
 		this.email=email;
+		this.imageUrl=imageUrl;
 	}
 	public Compte() {}
 	

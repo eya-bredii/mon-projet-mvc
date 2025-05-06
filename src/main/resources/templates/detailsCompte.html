@@ -11,7 +11,9 @@
     <h1 class="text-center mb-4">Détails du Compte :</h1>
 
     <div class="text-center">
-
+         <div class="mb-3">
+        <img th:src="@{${compte.imageUrl}}" alt="Image du client" class="img-thumbnail" style="max-width: 200px;">
+        </div>
         <p><strong>ID :</strong> <span th:text="${compte.id}"></span></p>
         <p><strong>Titulaire :</strong> <span th:text="${compte.titulaire}"></span></p>
         <p><strong>CIN :</strong> <span th:text="${compte.cin}"></span></p>

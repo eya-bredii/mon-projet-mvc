@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" lang="fr">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ajout d'un Compte</title>
+    <title>Page Formulaire</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body class="container mt-5">
+  </head>
+  <body class="container mt-5">
 
-    <h2 class="text-center mb-4">Formulaire d'Ajout d'un Compte</h2>
+    <h2 class="text-center mb-4">Formulaire de modification</h2>
 
-    <form th:action="@{/comptes/add}" th:object="${compte}" enctype="multipart/form-data" method="POST" class="border p-4 rounded shadow-lg bg-light">
-
-        <div class="mb-3">
+    <form th:action="@{/comptes/modifier}" th:object="${compte}" enctype="multipart/form-data" method="post" >
+           <input type="hidden" th:field="*{id}" />
+          <div class="mb-3">
             <label for="titulaire" class="form-label">Titulaire :</label>
             <input type="text" id="titulaire" th:field="*{titulaire}" class="form-control" required >
         </div>
@@ -37,13 +37,21 @@
             <label for="banqueId" class="form-label">Banque :</label>
             <select name="banqueId" id="banqueId" class="form-select" required>
                 <option value="" disabled selected>Choisir une banque</option>
-                <option th:each="ban : ${banques}" th:value="${ban.id}" th:text="${ban.name}"></option>
+                <option 
+    th:e        th:each="ban : ${banques}" 
+    th:v        th:value="${ban.id}" 
+    th:t        th:text="${ban.name}"
+    th:s        th:selected="${ban.id} == ${compte.banque.id}">
+</option>
             </select>
         </div>
-        
-       <div class="mb-3">
-            <label for="image" class="form-label">Télécharger une image :</label>
-            <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
+        <div class="mb-3">
+           <label class="form-label">Image actuelle :</label><br>
+           <img th:if="${compte.imageUrl != null}" th:src="@{${compte.imageUrl}}" alt="Image actuelle" style="max-width: 200px;">
+       </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Télécharger une nouvelle image :</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*" >
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Valider</button>
