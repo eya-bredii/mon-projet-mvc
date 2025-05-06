@@ -1,35 +1,52 @@
 <!DOCTYPE html>
-<html  xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page Formulaire</title>
+    <title>Ajout d'un Compte</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="container mt-5">
 
-    <h2 class="text-center mb-4">Formulaire d'ajout</h2>
+    <h2 class="text-center mb-4">Formulaire d'Ajout d'un Compte</h2>
 
-    <form th:action="@{/comptes/add}" th:object="${compte}" method="POST"  >
-           
-             Titulaire:
-            <input type="text" th:field="*{titulaire}"  required >
-             Solde
-            <input type="number" th:field="*{solde}"  required >
-          
-    <label for="banqueId"> choose banque :</label>
-     <select name="banqueId" required>
-     <option value=""disabled selected> choose banque</option>
-     <option th:each="ban:${banques}" th:value="${ban.id}" th:text="${ban.name}"></option>     
-     </select>
-     <br>
+    <form th:action="@{/comptes/add}" th:object="${compte}" method="POST" class="border p-4 rounded shadow-lg bg-light">
 
+        <div class="mb-3">
+            <label for="titulaire" class="form-label">Titulaire :</label>
+            <input type="text" id="titulaire" th:field="*{titulaire}" class="form-control" required >
+        </div>
         
+        <div class="mb-3">
+            <label for="CIN" class="form-label"> CIN:</label>
+            <input type="text" id="cin" th:field="*{cin}" class="form-control" required >
+        </div>
+        
+         <div class="mb-3">
+            <label for="E-mail" class="form-label"> Email:</label>
+            <input type="text" id="email" th:field="*{email}" class="form-control" required >
+        </div>
          
-         
-        <button type="submit" class="btn btn-primary w-100">Valider</button>
+       <div class="mb-3">
+            <label for="solde" class="form-label">Solde initial :</label>
+            <input type="number" id="solde" th:field="*{solde}" class="form-control" required >
+      </div>
 
+        <div class="mb-3">
+            <label for="banqueId" class="form-label">Banque :</label>
+            <select name="banqueId" id="banqueId" class="form-select" required>
+                <option value="" disabled selected>Choisir une banque</option>
+                <option th:each="ban : ${banques}" th:value="${ban.id}" th:text="${ban.name}"></option>
+            </select>
+        </div>
+        
+       <div class="mb-3">
+            <label for="image" class="form-label">Télécharger une image :</label>
+            <input type="file" id="image" name="image" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Valider</button>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

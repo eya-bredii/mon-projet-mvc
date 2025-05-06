@@ -22,14 +22,14 @@ public class CompteController {
 
  private final CompteRepository compteRepository;
  private final BanqueRepository banqueRepository;
- //injection des dependences via le constructeur
+ 
  public CompteController(BanqueRepository banqueRepository,CompteRepository compteRepository) {
 	    this.banqueRepository = banqueRepository;
 	    this.compteRepository = compteRepository;
 	}
 
  @GetMapping("listeComptes")
- public String lister(Model model) {
+ public String liste(Model model) {
 	 model.addAttribute("comptes",compteRepository.findAll());
 	 return "listeComptes";
  }
@@ -61,7 +61,7 @@ public class CompteController {
  public String deposer(@PathVariable("id") Long id, Model model) {
      Compte compte = compteRepository.getById(id); 
      model.addAttribute("compte", compte);
-     return "Depot"; // Vue avec le formulaire pour entrer le montant
+     return "Depot"; 
  }
  @PostMapping("depot/{id}")
  public String deposer(@PathVariable("id") Long id,
@@ -70,16 +70,16 @@ public class CompteController {
 
      Compte compte = compteRepository.getById(id);
      compte.setSolde(compte.getSolde() + montant);
-     compteRepository.save(compte); // Sauvegarde en base
+     compteRepository.save(compte); 
     
-     return "redirect:/comptes/listeComptes";
+     return "redirect:/comptes/detailsCompte/{id}";
 
  }
  @GetMapping("retrait/{id}")
  public String retrait(@PathVariable("id") Long id, Model model) {
      Compte compte = compteRepository.getById(id);
      model.addAttribute("compte", compte);
-     return "retrait"; // Formulaire pour entrer le montant à retirer
+     return "retrait"; 
  }
  @PostMapping("retrait/{id}")
  public String retirer(@PathVariable("id") Long id,
@@ -88,9 +88,9 @@ public class CompteController {
 
      Compte compte = compteRepository.getById(id);
      compte.setSolde(compte.getSolde() - montant);
-     compteRepository.save(compte); // Sauvegarde en base
+     compteRepository.save(compte); 
      
-     return "redirect:/comptes/listeComptes"; 
+     return "redirect:/comptes/detailsCompte/{id}"; 
  }
 
 

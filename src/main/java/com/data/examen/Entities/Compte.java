@@ -13,10 +13,12 @@ public class Compte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
 	private String titulaire;
 	private double solde;
+	private Long cin;
+	private String email;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "banque_id")
 	
@@ -47,15 +49,31 @@ public class Compte {
 	public void setSolde(double solde) {
 		this.solde=solde;
 	}
-	public Compte(Long id,String titulaire,double solde) {
+	public Long getCin() {
+		return cin;
+	}
+	public void setCin(Long cin) {
+		this.cin = cin;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Compte(Long id,String titulaire,double solde,Long cin,String email) {
 		this.id=id;
 		this.titulaire=titulaire;
 		this.solde=solde;
+		this.cin=cin;
+		this.email=email;
 	}
-	public Compte(String titulaire,double solde) {
+	public Compte(String titulaire,double solde,long cin,String email) {
 		
 		this.titulaire=titulaire;
 		this.solde=solde;
+		this.cin=cin;
+		this.email=email;
 	}
 	public Compte() {}
 	
