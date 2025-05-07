@@ -1,14 +1,16 @@
 package com.data.examen.Controllers;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path; // ✅ Ajouté pour éviter l'erreur de type
+import java.nio.file.Path; 
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,25 +30,21 @@ import com.data.examen.Service.EmailService;
 @Controller
 @RequestMapping("comptes")
 public class CompteController {
-	@Autowired
+
+	private EmailService emailService;	
  private final CompteRepository compteRepository;
  private final BanqueRepository banqueRepository;
  
- public CompteController(BanqueRepository banqueRepository,CompteRepository compteRepository) {
+ public CompteController(BanqueRepository banqueRepository,CompteRepository compteRepository,EmailService emailService) {
 	    this.banqueRepository = banqueRepository;
 	    this.compteRepository = compteRepository;
+	    this.emailService=emailService;
 	}
- @Autowired
- private EmailService emailService;
- @PostMapping("/register")
- public String registerUser(@ModelAttribute Compte compte) {
-     // Sauvegarde en base
-     compteRepository.save(compte);
-     
-     // Envoi de l'email
-     emailService.sendAccountCreationEmail(compte.getEmail(), compte.getTitulaire());
-       return "redirect:/listeComptes";
- }
+ 
+
+
+ 
+
 
  @GetMapping("listeComptes")
  public String liste(Model model) {
@@ -60,14 +58,44 @@ public class CompteController {
 	 model.addAttribute("compte",new Compte());
 	 return "ajoutercompte";
  }
- @PostMapping("add")
- public String add(@RequestParam("banqueId")long id, @ModelAttribute("compte") Compte c) {
-	Banque b=banqueRepository.getById(id); 
-	c.setBanque(b); 
-	compteRepository.save(c); 
-	return "redirect:listeComptes";
-	
+ @PostMapping("/add")
+ public String add(@RequestParam("banqueId") long id,
+                   @ModelAttribute("compte") Compte c,
+                   @RequestParam("image") MultipartFile imageFile) throws IOException {
+
+     if (!imageFile.isEmpty()) {
+         // Nom unique pour éviter les conflits
+         String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+
+         // Obtenir le chemin vers static/images
+         File staticImageFolder = new ClassPathResource("static/images").getFile();
+         Path imagePath = Paths.get(staticImageFolder.getAbsolutePath(), fileName);
+
+         // Créer le dossier s’il n’existe pas
+         Files.createDirectories(imagePath.getParent());
+
+         // Copier le fichier dans le dossier
+         Files.copy(imageFile.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+         // Enregistrer l’URL de l’image
+         c.setImageUrl("/images/" + fileName);
+     }
+
+     // Associer la banque
+     Banque b = banqueRepository.getById(id);
+     c.setBanque(b);
+     
+     // Enregistrer le compte
+     compteRepository.save(c);
+  // ✅ Envoi de l'e-mail au client
+     emailService.sendAccountCreationEmail(
+         c.getEmail(), "Création de compte",
+         "Bonjour " + c.getTitulaire() + ", votre compte a été créé avec succès.");
+
+     return "redirect:listeComptes";
  }
+	
+ 
  @GetMapping("detailsCompte/{id}")
  public String détails(@PathVariable("id") long id, Model model) {
      Compte compte = compteRepository.getById(id); 
@@ -119,6 +147,7 @@ public class CompteController {
 	    compteRepository.deleteById(id);
 	 
          return "redirect:/comptes/listeComptes"; } 
+ 
  @GetMapping("modifier/{id}")
  public String modifierCompte(@PathVariable("id") long id, Model model) {
      Compte compte = compteRepository.getById(id);
@@ -126,6 +155,7 @@ public class CompteController {
      model.addAttribute("banques", banqueRepository.findAll());
      return "modifier";
  }
+ 
  @PostMapping("modifier")
  public String modifierCompte(@ModelAttribute("compte") Compte compteModifie,
                               @RequestParam("banqueId") Long banqueId,

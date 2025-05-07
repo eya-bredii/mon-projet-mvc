@@ -9,14 +9,15 @@ public class EmailService {
 	@Autowired
     private JavaMailSender mailSender;
 
-    public void sendAccountCreationEmail(String toEmail, String userName) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Création de votre compte bancaire");
-        message.setText("Bonjour " + userName + ",\n\nVotre compte a été créé avec succès dans notre banque.\n\nMerci pour votre confiance.\n\nCordialement,\nL'équipe de la banque.");
-        message.setFrom("eyabredai123@gmail.com");
+    public void sendAccountCreationEmail(String toEmail, String userName,String message) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(toEmail); //le destinataire
+        email.setSubject("Création de votre compte bancaire");
+        email.setText("Bonjour " + userName + ",\n\nVotre compte a été créé avec succès dans notre banque.\n\nMerci pour votre confiance.\n\nCordialement,\nL'équipe de la banque.");
+        email.setFrom("eyabredai123@gmail.com"); //l'expéditeur
 
-        mailSender.send(message);
+
+        mailSender.send(email);
     }
 
 }
